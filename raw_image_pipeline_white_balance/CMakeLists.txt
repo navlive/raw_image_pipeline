@@ -73,7 +73,7 @@ install(
 # Mark other files for installation
 install(
   DIRECTORY model
-  DESTINATION lib
+  DESTINATION share/${PROJECT_NAME}
 )
 
 ament_export_include_directories(include)
