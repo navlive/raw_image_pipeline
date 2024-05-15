@@ -12,8 +12,11 @@ based on Barron, "Fast Fourier Color Constancy", CVPR, 2017
 #include <raw_image_pipeline_white_balance/convolutional_color_constancy.hpp>
 #include <filesystem>
 
-#define FILE_FOLDER (std::filesystem::path(__FILE__).parent_path().string())
-#define DEFAULT_MODEL_PATH (FILE_FOLDER + "/../../model/default.bin")
+// #define FILE_FOLDER (std::filesystem::path(__FILE__).parent_path().string())
+// #define DEFAULT_MODEL_PATH (FILE_FOLDER + "/../../model/default.bin")
+
+#define FILE_FOLDER "/opt/ros/humble/share/raw_image_pipeline_white_balance/model/"
+#define DEFAULT_MODEL_PATH (std::string(FILE_FOLDER) + "default.bin")
 
 namespace raw_image_pipeline_white_balance {
 ConvolutionalColorConstancyWB::ConvolutionalColorConstancyWB(bool use_gpu)
@@ -138,11 +141,13 @@ int ConvolutionalColorConstancyWB::loadModel(const std::string& model_file) {
   if (debug_) {
     cv::Mat filter_vis;
     cv::normalize(model_.filter_, filter_vis, 0, 255.0, cv::NORM_MINMAX);
-    cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_filter" + std::to_string(idx_) + ".png", filter_vis);
+    // cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_filter" + std::to_string(idx_) + ".png", filter_vis);
+    cv::imwrite(std::string(FILE_FOLDER) + "/raw_image_pipeline_white_balance_filter" + std::to_string(idx_) + ".png", filter_vis);
 
     cv::Mat bias_vis;
     cv::normalize(model_.bias_, bias_vis, 0, 255.0, cv::NORM_MINMAX);
-    cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_bias" + std::to_string(idx_) + ".png", bias_vis);
+    //cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_bias" + std::to_string(idx_) + ".png", bias_vis);
+    cv::imwrite(std::string(FILE_FOLDER) + "/raw_image_pipeline_white_balance_bias" + std::to_string(idx_) + ".png", bias_vis);
   }
 
   // Preallocate FFT variables
@@ -219,9 +224,12 @@ void ConvolutionalColorConstancyWB::calculateHistogramFeature(const cv::Mat& src
   cv::Mat mask = upper_mask & lower_mask;
 
   if (debug_) {
-    cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_lower_mask_" + out_name + std::to_string(idx_) + ".png", lower_mask);
-    cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_upper_mask_" + out_name + std::to_string(idx_) + ".png", upper_mask);
-    cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_mask_" + out_name + std::to_string(idx_) + ".png", mask);
+    //cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_lower_mask_" + out_name + std::to_string(idx_) + ".png", lower_mask);
+    //cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_upper_mask_" + out_name + std::to_string(idx_) + ".png", upper_mask);
+    //cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_mask_" + out_name + std::to_string(idx_) + ".png", mask);
+    cv::imwrite(std::string(FILE_FOLDER) + "/raw_image_pipeline_white_balance_lower_mask_" + out_name + std::to_string(idx_) + ".png", lower_mask);
+    cv::imwrite(std::string(FILE_FOLDER) + "/raw_image_pipeline_white_balance_upper_mask_" + out_name + std::to_string(idx_) + ".png", upper_mask);
+    cv::imwrite(std::string(FILE_FOLDER) + "/raw_image_pipeline_white_balance_mask_" + out_name + std::to_string(idx_) + ".png", mask);
   }
 
   // Apply logarithm to the whole image to get log-chroma
@@ -266,7 +274,8 @@ void ConvolutionalColorConstancyWB::calculateHistogramFeature(const cv::Mat& src
   if (debug_) {
     cv::Mat hist_vis;
     cv::normalize(model_.hist_, hist_vis, 0, 255.0, cv::NORM_MINMAX);
-    cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_histogram_" + out_name + std::to_string(idx_) + ".png", hist_vis);
+    // cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_histogram_" + out_name + std::to_string(idx_) + ".png", hist_vis);
+    cv::imwrite(std::string(FILE_FOLDER) + "/raw_image_pipeline_white_balance_histogram_" + out_name + std::to_string(idx_) + ".png", hist_vis);
   }
 }
 
@@ -419,7 +428,8 @@ int ConvolutionalColorConstancyWB::computeResponseCuda() {
     gpu_model_.response_.download(response);
     cv::Mat gpu_response_vis;
     cv::normalize(response, gpu_response_vis, 0, 255.0, cv::NORM_MINMAX);
-    cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_response" + std::to_string(idx_) + ".png", gpu_response_vis);
+    // cv::imwrite(FILE_FOLDER + "/raw_image_pipeline_white_balance_response" + std::to_string(idx_) + ".png", gpu_response_vis);
+    cv::imwrite(std::string(FILE_FOLDER) + "/raw_image_pipeline_white_balance_response" + std::to_string(idx_) + ".png", gpu_response_vis);
   }
   return 0;
 }

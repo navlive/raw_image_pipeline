@@ -6,10 +6,15 @@
 #include <raw_image_pipeline/raw_image_pipeline.hpp>
 
 #include <filesystem>
-#define FILE_FOLDER (std::filesystem::path(__FILE__).parent_path().string())
-#define DEFAULT_PARAMS_PATH (FILE_FOLDER + "/../../config/pipeline_params_example.yaml")
-#define DEFAULT_CALIBRATION_PATH (FILE_FOLDER + "/../../config/alphasense_calib_example.yaml")
-#define DEFAULT_COLOR_CALIBRATION_PATH (FILE_FOLDER + "/../../config/alphasense_color_calib_example.yaml")
+// #define FILE_FOLDER (std::filesystem::path(__FILE__).parent_path().string())
+// #define DEFAULT_PARAMS_PATH (FILE_FOLDER + "/../../config/pipeline_params_example.yaml")
+// #define DEFAULT_CALIBRATION_PATH (FILE_FOLDER + "/../../config/alphasense_calib_example.yaml")
+// #define DEFAULT_COLOR_CALIBRATION_PATH (FILE_FOLDER + "/../../config/alphasense_color_calib_example.yaml")
+
+#define FILE_FOLDER "/opt/ros/humble/share/raw_image_pipeline/config/"
+#define DEFAULT_PARAMS_PATH (std::string(FILE_FOLDER)+ "pipeline_params_example.yaml")
+#define DEFAULT_CALIBRATION_PATH (std::string(FILE_FOLDER)+ "alphasense_calib_example.yaml")
+#define DEFAULT_COLOR_CALIBRATION_PATH (std::string(FILE_FOLDER) + "alphasense_color_calib_example.yaml")
 
 namespace raw_image_pipeline {
 
