@@ -23,6 +23,18 @@ find_package(Eigen3 REQUIRED)
 message("Eigen Version:" ${EIGEN3_VERSION_STRING})
 message("Eigen Path:" ${Eigen3_DIR})
 
+##################################################################################
+# Check if the custom OpenCV directory exists
+set(USER_HOME_DIRECTORY $ENV{HOME})
+set(OPENCV_CUSTOM_PATH "/usr/local/lib/cmake/opencv4/")
+message(STATUS "Searching for custom opencv version in: ${OPENCV_CUSTOM_PATH}")
+if(EXISTS "${OPENCV_CUSTOM_PATH}")
+  message(STATUS "Custom OpenCV path found at: ${OPENCV_CUSTOM_PATH}")
+  set(OpenCV_DIR "${OPENCV_CUSTOM_PATH}")
+else()
+  message(WARNING "Custom OpenCV path not found. Falling back to default OpenCV.")
+endif()
+
 find_package(OpenCV REQUIRED)
 message("OpenCV version: ${OpenCV_Version}")
 message("OpenCV path: ${OpenCV_DIR}")
@@ -91,6 +103,7 @@ ament_target_dependencies(${PROJECT_NAME}
 )
 target_link_libraries(${PROJECT_NAME}
   ${CUDA_npp_LIBRARIES}
+  ${OpenCV_LIBS}
 )
 
 # Mark executables and/or libraries for installation

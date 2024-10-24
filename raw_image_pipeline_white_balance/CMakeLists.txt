@@ -17,6 +17,19 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(ament_index_cpp REQUIRED)
+
+##################################################################################
+# Check if the custom OpenCV directory exists
+set(USER_HOME_DIRECTORY $ENV{HOME})
+set(OPENCV_CUSTOM_PATH "/usr/local/lib/cmake/opencv4/")
+message(STATUS "Searching for custom opencv version in: ${OPENCV_CUSTOM_PATH}")
+if(EXISTS "${OPENCV_CUSTOM_PATH}")
+  message(STATUS "Custom OpenCV path found at: ${OPENCV_CUSTOM_PATH}")
+  set(OpenCV_DIR "${OPENCV_CUSTOM_PATH}")
+else()
+  message(WARNING "Custom OpenCV path not found. Falling back to default OpenCV.")
+endif()
+
 find_package(OpenCV REQUIRED)
 find_package(rclcpp REQUIRED)
 # ROS2HACK: find dynamic_reconfigure
@@ -49,6 +62,7 @@ add_executable(${PROJECT_NAME}_node
 ament_target_dependencies(${PROJECT_NAME}_node ament_index_cpp rclcpp)
 target_link_libraries(${PROJECT_NAME}_node
     ${PROJECT_NAME}
+    ${OpenCV_LIBS}
 )
 
 # ROS2HACK
